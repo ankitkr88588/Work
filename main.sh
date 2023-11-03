@@ -2,9 +2,7 @@
 
 # Define an array of process names and their corresponding commands
 declare -A processes
-processes["magisk.py"]="nohup python3 /home/u201900/Magisk-flasher/main.py &"
-processes["whisper.py"]="nohup python3 /home/u201900/main3.py &"
-processes["firmware.py"]="nohup python3 /home/u201900/firmware/firmware.py &"
+processes["zipper.py"]="nohup python3 /home/u206777/Work/zipper/zipper.py &"
 # Declare an associative array to track process PIDs
 declare -A pids
 
