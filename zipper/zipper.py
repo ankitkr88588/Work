@@ -22,6 +22,34 @@ admin = 6476862483 # Replace with the actual admin user ID
 time.sleep(2)
 client = TelegramClient(None, api_id, api_hash)
 
+@client.on(events.NewMessage(pattern='^!skip$'))
+async def skip_handler(event):
+    global dd
+    user_id = event.sender_id
+
+    # Check if the user is an admin by comparing their user ID with the ones in admin.txt
+    admin_file = "/home/u206777/Work/zipper/admin.txt"
+    if os.path.exists(admin_file):
+        with open(admin_file, "r") as file:
+            admin_ids = [int(line.strip()) for line in file.readlines()]
+            if user_id in admin_ids:
+                await event.respond("Admin command received. Skipping the task...")
+                link_downloading = False
+                download_in_progress = False
+                if not download_queue.empty():
+
+                 next_file = download_queue.get()
+                 dd=dd-1
+                 user_ids.clear()
+                 await download(next_file)
+                elif not link_download_queue.empty():
+                 next_link = link_download_queue.get()
+                 dd=dd-1
+                 user_ids.clear()
+                 await link_download(next_link)
+
+
+
 @client.on(events.NewMessage(pattern='^!reboot$'))
 async def reboot_handler(event):
     user_id = event.sender_id
@@ -40,34 +68,34 @@ async def reboot_handler(event):
         await event.respond("Admin file not found. Please contact the bot admin.")
 
 links = {
-    'Monday_phase1': 'https://direct-link.net/756279/verify',
-    'Monday_phase2': 'https://direct-link.net/756279/verify1',
-    'Monday_phase3': 'https://direct-link.net/756279/verify2',
-    'Monday_phase4': 'https://direct-link.net/756279/verify3',
-    'Tuesday_phase1': 'https://direct-link.net/123456/verify4',
-    'Tuesday_phase2': 'https://direct-link.net/123456/verify5',
-    'Tuesday_phase3': 'https://direct-link.net/123456/verify6',
-    'Tuesday_phase4': 'https://direct-link.net/123456/verify7',
-    'Wednesday_phase1': 'https://direct-link.net/756279/verify8',
-    'Wednesday_phase2': 'https://direct-link.net/756279/verify9',
-    'Wednesday_phase3': 'https://direct-link.net/756279/verify10',
-    'Wednesday_phase4': 'https://direct-link.net/756279/verify11',
-    'Thursday_phase1': 'https://direct-link.net/756279/verify12',
-    'Thursday_phase2': 'https://direct-link.net/756279/verify13',
-    'Thursday_phase3': 'https://direct-link.net/756279/verify14',
-    'Thursday_phase4': 'https://direct-link.net/756279/verify15',
-    'Friday_phase1': 'https://direct-link.net/756279/verify16',
-    'Friday_phase2': 'https://direct-link.net/756279/verify17',
-    'Friday_phase3': 'https://direct-link.net/756279/verify18',
-    'Friday_phase4': 'https://direct-link.net/756279/verify19',
-    'Saturday_phase1': 'https://direct-link.net/756279/verify20',
-    'Saturday_phase2': 'https://direct-link.net/756279/verify21',
-    'Saturday_phase3': 'https://direct-link.net/756279/verify22',
-    'Saturday_phase4': 'https://direct-link.net/756279/verify23',
-    'Sunday_phase1': 'https://direct-link.net/756279/verify24',
-    'Sunday_phase2': 'https://direct-link.net/756279/verify25',
-    'Sunday_phase3': 'https://direct-link.net/756279/verify26',
-    'Sunday_phase4': 'https://direct-link.net/756279/verify27',
+    'Monday_phase1': 'https://xpshort.com/reverify',
+    'Monday_phase2': 'https://xpshort.com/reverify1',
+    'Monday_phase3': 'https://xpshort.com/reverify2',
+    'Monday_phase4': 'https://xpshort.com/reverify3',
+    'Tuesday_phase1': 'https://xpshort.com/reverify4',
+    'Tuesday_phase2': 'https://xpshort.com/reverify5',
+    'Tuesday_phase3': 'https://xpshort.com/reverify6',
+    'Tuesday_phase4': 'https://xpshort.com/reverify7',
+    'Wednesday_phase1': 'https://xpshort.com/reverify8',
+    'Wednesday_phase2': 'https://xpshort.com/reverify9',
+    'Wednesday_phase3': 'https://xpshort.com/reverify10',
+    'Wednesday_phase4': 'https://xpshort.com/reverify11',
+    'Thursday_phase1': 'https://xpshort.com/reverify12',
+    'Thursday_phase2': 'https://xpshort.com/reverify13',
+    'Thursday_phase3': 'https://xpshort.com/reverify14',
+    'Thursday_phase4': 'https://xpshort.com/reverify15',
+    'Friday_phase1': 'https://xpshort.com/reverify16',
+    'Friday_phase2': 'https://xpshort.com/reverify17',
+    'Friday_phase3': 'https://xpshort.com/reverify18',
+    'Friday_phase4': 'https://xpshort.com/reverify19',
+    'Saturday_phase1': 'https://xpshort.com/reverify20',
+    'Saturday_phase2': 'https://xpshort.com/reverify21',
+    'Saturday_phase3': 'https://xpshort.com/reverify22',
+    'Saturday_phase4': 'https://xpshort.com/reverify23',
+    'Sunday_phase1': 'https://xpshort.com/reverify24',
+    'Sunday_phase2': 'https://xpshort.com/reverify25',
+    'Sunday_phase3': 'https://xpshort.com/reverify26',
+    'Sunday_phase4': 'https://xpshort.com/reverify27',
 
 }
 uuser_ids={}
@@ -227,13 +255,52 @@ async def lstart(event):
             # User already exists, check if their expiration time has passed
     if  days_of_week[output] != event.raw_text:
         await event.respond("Wrong link, please try again")
+        await link_send(event)
                 # User exists and their access is still valid
 # ...
+active_user_id =None
 # ...
 @client.on(events.CallbackQuery(data=b'bhad'))
 async def callback_queue(event):
     global dd
-    await event.answer(f"your current position:{dd}",alert=True)
+    global active_user_id
+    user_id = event.sender_id
+
+    # Check if the user is an admin by comparing their user ID with the ones in admin.t$
+    admin_file = "/home/u205987/compressor/admin.txt"
+    if 2==2:
+                user_task_counts = {}
+
+    # Iterate through the events in the download queue and count tasks per user
+                for download_event in download_queue.queue:
+                    user_id = download_event.sender_id
+
+                    if user_id in user_task_counts:
+                        user_task_counts[user_id] += 1
+                    else:
+                        user_task_counts[user_id] = 1
+
+    # Iterate through the events in the link download queue and update counts
+                for link_event in link_download_queue.queue:
+                    user_id = link_event.sender_id
+                    if user_id in user_task_counts:
+                        user_task_counts[user_id] += 1
+                    else:
+                        user_task_counts[user_id] = 1
+                if active_user_id:
+                    response_text = f"ACTIVE USER ⚡: {active_user_id}\n\n\n"
+                else:
+                    response_text = "No active downloads or uploads\n\n\n"
+
+                response_text += "DOWNLOAD IN QUEUE:\n"
+
+                for user_id, task_count in user_task_counts.items():
+                    response_text += f"{user_id}:({task_count} tasks)\n\n\n"
+                response_text += f"\nNEXT QUEUE IN: {time_left} seconds"
+                try:
+                    await event.answer(response_text, alert=True)
+                except Exception as e:
+                    await event.answer(f"your current queue {dd}", alert=True)
 
 @client.on(events.CallbackQuery(data=b'help'))
 async def callback_help(event):
@@ -386,7 +453,7 @@ class Timer:
             self.start_time = time.time()
             return True
         return False
-
+time_left=0
 # Store user state to track when to downlo
 import queue  # Import the queue module
 dd=0
@@ -397,7 +464,7 @@ user2=None
 user3=None
 user4=None
 user5=None
-
+max_retry=0
 zipping_in_progress = False
 # Define a flag to indicate if a download process is ongoing
 download_in_progress = False
@@ -413,6 +480,7 @@ async def main(event):
     elif event.media or event.document:
         await download(event)
 async def download(event):
+    global active_user_id
     global download_in_progress  # Use a global flag to track download process
     global dd
     global user1
@@ -420,6 +488,7 @@ async def download(event):
     global user3
     global message
     global edit
+    global max_retry
     size=0
     if event.document:
         if event.document.size > 2000000000:
@@ -448,6 +517,7 @@ async def download(event):
         timer = Timer()
 
         async def progress_bar(current, total,start_time=time.time()):
+            global time_left
             if timer.can_send():
                 progress_percent = current * 100 / total
                 progress_message = f"Downloading: {progress_percent:.2f}%\n"
@@ -480,6 +550,7 @@ async def download(event):
         if not download_in_progress and not link_downloading and not zipping_in_progress:
             user_ids[user_id] = True
             download_in_progress = True  #
+            active_user_id=user_id
             msg = await event.reply("Downloading started")
             time.sleep(2)
             fi = event.file.name
@@ -495,8 +566,13 @@ async def download(event):
                         await download_file(event.client, docs, out, progress_callback=progress_bar)
                         await msg.edit("Finished downloading\n/my_files to see your files")
                     except Exception as e:
-                        print(e)
-                        download_in_progress = False
+                        max_retry+=1
+                        if max_try>6:
+                         await msg.delete()
+                         await download_file(event.client, docs, out, progress_callback=progress_bar)
+                        else:
+                         download_in_progress = False
+            max_retry=0
             download_in_progress = False  # Reset the flag after download is complete
             if not download_queue.empty():
                 
@@ -906,10 +982,8 @@ async def link_download(event):
                     await event.reply("File size exceeds available storage. Aborting download.")
             else:
                 await event.reply("Content length not found in headers. Cannot determine file size.")
-        except requests.Exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
-        except subprocess.CalledProcessError as e:
-            print(f"An error occurred: {e}")
+        except Exceptionas as e:
+            await event.reply(e)
     else:
         dd+=1
         que=f'I have added your file in queue to download\n\nCurrent position: {dd}'
