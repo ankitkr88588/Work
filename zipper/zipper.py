@@ -26,36 +26,89 @@ client = TelegramClient(None, api_id, api_hash)
 async def skip_handler(event):
     global dd
     user_id = event.sender_id
+    global link_downloading
+    global download_in_progress
+    global zipping_in_progress
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.txt
-    admin_file = "/home/u206777/Work/zipper/admin.txt"
+    admin_file = "/home/u209464/Work/zipper/admin.txt"
     if os.path.exists(admin_file):
         with open(admin_file, "r") as file:
             admin_ids = [int(line.strip()) for line in file.readlines()]
             if user_id in admin_ids:
                 await event.respond("Admin command received. Skipping the task...")
-                link_downloading = False
-                download_in_progress = False
-                if not download_queue.empty():
+                await timeout(event)
+
+
+
+
+async def timeout(event):
+    global dd
+    global max_retry
+    max_retry=0
+    user_id = event.sender_id
+    global zipping_in_progress
+    global link_downloading
+    global download_in_progress
+    zipping_in_progress=False
+    link_downloading = False
+    download_in_progress = False
+    if not download_queue.empty():
 
                  next_file = download_queue.get()
                  dd=dd-1
                  user_ids.clear()
                  await download(next_file)
-                elif not link_download_queue.empty():
+    elif not link_download_queue.empty():
                  next_link = link_download_queue.get()
                  dd=dd-1
                  user_ids.clear()
                  await link_download(next_link)
+def read_chat_ids_from_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            chat_ids = file.readlines()
+            chat_ids = [chat_id.strip() for chat_id in chat_ids]
+            return chat_ids
+    except Exception as e:
+        print(f"Error reading file: {e}")
+        return []
 
+# Path to your user.txt file
+file_path = '/home/u209464/Work/zipper/user.txt'
 
+@client.on(events.NewMessage(pattern='/loud'))
+async def loud_message(event):
+    user_id = event.sender_id
 
+    # Check if the user is an admin by comparing their user ID with the ones in admin.t$
+    admin_file = "/home/u209464/Work/zipper/admin.txt"
+    if os.path.exists(admin_file):
+        with open(admin_file, "r") as file:
+            admin_ids = [int(line.strip()) for line in file.readlines()]
+            if user_id not in admin_ids:
+             return
+    chat_ids = read_chat_ids_from_file(file_path)
+    if event.is_reply:
+        try:
+            reply_message = await event.get_reply_message()
+            # Check if the replied message is text or media
+            if reply_message:
+                # If it's text, forward the text message
+                # If it's media, forward the media message
+                for chat_id in chat_ids:
+                    try:
+                        await client.forward_messages(int(chat_id), reply_message)
+                    except Exception as e:
+                        print(f"Failed to forward message: {e}")
+        except Exception as e:
+            print(f"Failed to forward message: {e}")
 @client.on(events.NewMessage(pattern='^!reboot$'))
 async def reboot_handler(event):
     user_id = event.sender_id
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.txt
-    admin_file = "/home/u206777/Work/zipper/admin.txt"
+    admin_file = "/home/u209464/Work/zipper/admin.txt"
     if os.path.exists(admin_file):
         with open(admin_file, "r") as file:
             admin_ids = [int(line.strip()) for line in file.readlines()]
@@ -123,11 +176,9 @@ days_of_week = {
     'Saturday_phase1': '/start verifycodeis27373636362737363',
     'Saturday_phase2': '/start verifycodeis27373636286364',
     'Saturday_phase3': '/start verifycodeis27373636363874',
-    'Saturday_phase4': '/start verifycodeis2737363373664',
-    'Sunday_phase1': '/start verifycodeis273736327263648',
+    'Saturday_phase4': '/start verifycodeis2737363373664',                                                                'Sunday_phase1': '/start verifycodeis273736327263648',
     'Sunday_phase2': '/start verifycodeis2737363639127644',
-    'Sunday_phase3': '/start verifycodeis2737363827374',
-    'Sunday_phase4': '/start verifycodeis2737363443648',
+    'Sunday_phase3': '/start verifycodeis2737363827374',                                                                  'Sunday_phase4': '/start verifycodeis2737363443648',
 }
 
 
@@ -138,10 +189,8 @@ help_button = Button.inline("❓ Help", b"help")  # Define the "Help" button
 mesaage=None
 clear_buttons = [Button.inline("🏠 Home", b"home")]
 cancel_download_button = Button.inline("❌ Cancel Download", b"cancel_download")
-
 common_buttons = [
-    [
-        Button.inline("🗂️ List My Files", b"my_files"),
+    [   Button.inline("🗂️ List My Files", b"my_files"),
         Button.inline("❌ Clear My Files", b"clear"),
     ],
     [
@@ -174,8 +223,7 @@ file_buttons = [
 nofile_buttons = [
     [
         Button.inline("❌ Clear My Files", b"clear"),
-        Button.inline("🏠 Home", b"home"),
-    ],
+        Button.inline("🏠 Home", b"home"),                                                                                ],
 [        help_button,  # Add the "Help" button
     ],
 
@@ -185,14 +233,13 @@ nofile_buttons = [
 async def cancel_download(event):
     user_id = event.sender_id
 
-    # Check if the user has an ongoing download
+    # Check if the user has an ongoing download                                                                           
     if user_id in user_ids:
-        # Remove the user from the queue
+        # Remove the user from the queue                                                                                      
         if not download_queue.empty():
-            download_queue.queue.remove(event)
-        # Reset the user's download status
+            download_queue.queue.remove(event)                                                                                
+# Reset the user's download status
         del user_ids[user_id]
-
         # Respond with a cancellation message
         await event.edit("Download canceled.")
     else:
@@ -202,10 +249,8 @@ async def cancel_download(event):
 async def link_send(event):
 
 # Get the current date and time
-
 # Define the phases for each day
     phases = ['phase1', 'phase2', 'phase3', 'phase4']
-
 # Get the current day and time
     current_datetime = datetime.datetime.now()
 
@@ -218,7 +263,6 @@ async def link_send(event):
 
 # Combine the day name and phase
     output = f'{day_name}_{phases[phase_index]}'
-
 # Print the result
     await event.respond("you need to verify first in order to use the bot to avoid spam",buttons=[Button.url("Click to verify",links[output]),Button.url("how to verify","https://t.me/nub_coder_s_updates/3")])
 
@@ -242,7 +286,7 @@ async def lstart(event):
 # Get the name of the current day
     day_name = current_datetime.strftime('%A')
 
-# Combine the day name and phase
+# Combine the day name and phase                                                                                          
     output = f'{day_name}_{phases[phase_index]}'
     # Check if the user's message contains the special start link
     if days_of_week[output] == event.raw_text:
@@ -253,6 +297,7 @@ async def lstart(event):
         await event.respond("Welcome back to the bot! You are verified for 4 hours",buttons=home_buttons)
 
             # User already exists, check if their expiration time has passed
+
     if  days_of_week[output] != event.raw_text:
         await event.respond("Wrong link, please try again")
         await link_send(event)
@@ -293,7 +338,6 @@ async def callback_queue(event):
                     response_text = "No active downloads or uploads\n\n\n"
 
                 response_text += "DOWNLOAD IN QUEUE:\n"
-
                 for user_id, task_count in user_task_counts.items():
                     response_text += f"{user_id}:({task_count} tasks)\n\n\n"
                 response_text += f"\nNEXT QUEUE IN: {time_left} seconds"
@@ -309,6 +353,19 @@ async def callback_help(event):
 
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/start'))
 async def start(event):
+    user_file_path = '/home/u209464/Work/zipper/user.txt'  # Update with your file path
+    user_exists = False
+    user_chat_id=str(event.chat_id)
+    if os.path.exists(user_file_path):
+        with open(user_file_path, 'r') as user_file:
+            user_ids = user_file.read().splitlines()
+            if user_chat_id in user_ids:
+                user_exists = True
+
+    # If the user's chat_id is not present, append it to the file
+    if not user_exists:
+        with open(user_file_path, 'a+') as user_file:
+            user_file.write(user_chat_id + '\n')
     await event.respond(
             "Hello! Send me any files or direct download link  and I will compress them to a zip",
             buttons=home_buttons)
@@ -377,9 +434,9 @@ async def list_files(event):
         return await event.respond("You need to join @nub_coder_s in order to use this bot.\n\nClick below to Join!", buttons=button)
     group_user_ids.clear()
 
-    
+
     user_id = str(event.sender_id)
-    user_dir = f"/home/u206777/Work/zipper/{user_id}"
+    user_dir = f"/home/u209464/Work/zipper/{user_id}"
 
     if os.path.exists(user_dir):
         files = os.listdir(user_dir)
@@ -406,9 +463,35 @@ async def list_files(event):
         except:
             await event.respond("Your directory doesn't exist, send me any file to create your directory", buttons=nofile_buttons)
 
+
+@client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text.startswith('/del ')))
+async def delete_file(event):
+    user_id = str(event.sender_id)
+    user_dir = f"/home/u209464/Work/zipper/{user_id}"
+
+    # Extract the file number from the message
+    try:
+        file_number = int(event.raw_text.split('/del ')[1]) - 1  # Adjust for 0-based indexing
+    except (IndexError, ValueError):
+        return await event.respond("Invalid file number. Use /del <file_number> to delete a file.")
+
+    if os.path.exists(user_dir):
+        files = os.listdir(user_dir)
+        if 0 <= file_number < len(files):
+            file_to_delete = os.path.join(user_dir, files[file_number])
+            os.remove(file_to_delete)
+            # Notify the user that the file has been deleted
+            return await event.respond(f"File '{files[file_number]}' has been deleted.")
+        else:
+            return await event.respond("Invalid file number. Use /del <file_number> to delete a file.")
+    else:
+        return await event.respond("Your directory doesn't exist. Send me any file to create your directory.")
+
+# ... (other handlers and code)
+
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/clear'))
 async def clear(event):
-    user_directory = "/home/u206777/Work/zipper"
+    user_directory = "/home/u209464/Work/zipper"
     user_id = str(event.sender_id)
     user_path = os.path.join(user_directory, user_id)
 
@@ -428,7 +511,7 @@ async def clear(event):
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/clean'))
 async def clean(event):
     if event.sender_id == 6476862483:
-        user_path = "/home/u206777/Work/zipper"  # Specify the correct directory path
+        user_path = "/home/u209464/Work/zipper"  # Specify the correct directory path
         if os.path.exists(user_path):
             items = os.listdir(user_path)
             for item in items:
@@ -440,7 +523,7 @@ async def clean(event):
             await event.edit(f"All directories and files inside {user_path} deleted successfully.", buttons=clear_buttons)
         else:
             await event.edit(f"The specified directory {user_path} does not exist.", buttons=clear_buttons)
-
+client.flood_sleep_threshold = 24*60*60
 client.start(bot_token=token)
 
 class Timer:
@@ -498,7 +581,7 @@ async def download(event):
     if user_id not in uuser_ids:
 
        return await link_send(event)
-    user_dir = f"/home/u206777/Work/zipper/{user_id}"
+    user_dir = f"/home/u209464/Work/zipper/{user_id}"
     #user_path = os.path.join(user_directory, user_id)
     os.makedirs(user_dir, exist_ok=True)
     # Calculate the remaining storage space
@@ -510,12 +593,13 @@ async def download(event):
         size=event.document.size
     if event.photo:
         docs=event.media
+
         size=100
     if size<=remaining_storage:
         type_of = "downloading\nProgress:"
         msg = None
-        timer = Timer()
 
+        timer = Timer()
         async def progress_bar(current, total,start_time=time.time()):
             global time_left
             if timer.can_send():
@@ -531,14 +615,12 @@ async def download(event):
                 time_left = (total - current) / (speed * 1024 * 1024)
                 progress_message += f"Time left: {time_left:.2f} seconds"
 
-                progress_bar_length = int(progress_percent / 2)
-                progress_bar_text = "█" * progress_bar_length + "░" * (50 - progress_bar_length)
-        
-                progress_message += f"\n[{progress_bar_text}]"
+                progress_bar_length = int(progress_percent / 5)
+                progress_bar_text = "█" * progress_bar_length + "░" * (20 - progress_bar_length)
 
+                progress_message += f"\n[{progress_bar_text}]"
         # Create a message with HTML formatting for better appearance
                 message_text = f"<b>{type_of}</b>\n{progress_message}"
-
                 try:
                     await asyncio.sleep(1)
                     await msg.edit(message_text, parse_mode='html')
@@ -555,7 +637,7 @@ async def download(event):
             time.sleep(2)
             fi = event.file.name
 
-            if fi is None :
+            if fi is None:
                 await client.download_media(event.media,file=user_dir,progress_callback=progress_bar)
                 await msg.edit("Finished downloading\n/my_files to see your files")
             if fi is not None:
@@ -563,19 +645,29 @@ async def download(event):
                 fi_encoded = fi.encode('utf-8')
                 with open(fi_encoded, "wb") as out:
                     try:
-                        await download_file(event.client, docs, out, progress_callback=progress_bar)
-                        await msg.edit("Finished downloading\n/my_files to see your files")
+                     await asyncio.wait_for(download_file(event.client, docs, out, progress_callback=progress_bar), timeout=600)
+                     await msg.edit("Finished downloading\n/my_files to see your files")
+                    except asyncio.TimeoutError:
+                     if max_retry < 6:
+                      download_in_progress = False
+                      await msg.delete()
+                      await download_file(event.client, docs, out, progress_callback=progress_bar)
+
+                     else:
+                      await timeout(event)
                     except Exception as e:
-                        max_retry+=1
-                        if max_try>6:
-                         await msg.delete()
-                         await download_file(event.client, docs, out, progress_callback=progress_bar)
-                        else:
-                         download_in_progress = False
+    # Handle other exceptions
+                     max_retry += 1
+                     if max_retry < 6:
+                      download_in_progress = False
+                      await msg.delete()
+                      await download_file(event.client, docs, out, progress_callback=progress_bar)
+                     else:
+                      await timeout(event)
             max_retry=0
-            download_in_progress = False  # Reset the flag after download is complete
+            download_in_progress = False
             if not download_queue.empty():
-                
+
                 next_file = download_queue.get()
                 dd=dd-1
                 user_ids.clear()
@@ -585,7 +677,7 @@ async def download(event):
                 dd=dd-1
                 user_ids.clear()
                 await link_download(next_link)
-              
+
         else:
             dd+=1
             que=f'I have added your file in queue to download'
@@ -593,12 +685,11 @@ async def download(event):
                user_ids[user_id] = True
                user2=await event.reply(que,buttons=Button.inline("check your queue",b"bhad"))
             download_queue.put(event)
-            #await msg.edit("Finished downloading", buttons=common_buttons)
     else:
         await event.reply("Not enough storage space to download this file.",buttons=common_buttons)
 
 
-
+zipping_in_progress=False
 
 import zipfile
 import re
@@ -618,12 +709,12 @@ async def create_zip(event):
     user = await event.get_sender()
     user_iid = user.id
     group = await client.get_entity("@nub_coder_s")
-
     global group_user_ids
+    global zipping_in_progress
     global file_name
     global edit
     global message
-    if file_name.startswith("/") or file_name.startswith("http"):
+    if file_name.startswith("/") or file_name.startswith("http") or event.document or event.media:
         return
     # Fetch all user IDs in the group and store them in the dictionary
     async for member in client.iter_participants(group):
@@ -635,7 +726,7 @@ async def create_zip(event):
         return await event.respond("You need to join @nub_coder_s in order to use this bot.\n\nClick below to Join!", buttons=button)
     group_user_ids.clear()
     user_id = str(event.sender_id)
-    user_dir = f"/home/u206777/Work/zipper/{user_id}"
+    user_dir = f"/home/u209464/Work/zipper/{user_id}"
     if not os.path.exists(user_dir):
         return await event.reply("Your directory doesn't exist.", buttons=back_buttons)
 
@@ -653,7 +744,7 @@ async def create_zip(event):
     if not file_name.endswith('.zip'):
         file_name=f'{file_name}.zip'
 
-    # Create a unique zip file name (you can use timestamp or any other method)
+# Create a unique zip file name (you can use timestamp or any other method)
     zip_filename= file_name
     video_extensions = ['.mp4', '.avi', '.wmv', '.mov', '.mkv', '.flv', '.webm', '.m4v', '.mpg', '.mpeg', '.3gp']
     video_files = [file for file in files if os.path.splitext(file)[1].lower() in video_extensions]
@@ -673,7 +764,7 @@ async def create_zip(event):
             if count % 8 == 0 and count != 0:
                 time.sleep(2)  # Wait for 5 seconds
 
-            command=['zip', '-r', zip_filename, os.path.join(user_dir, filename)]
+            command=['zip', zip_filename, os.path.join(user_dir, filename)]
             output= subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,bufsize=1,  universal_newlines=True, )
             for line in output.stdout:
                 line = line.strip()
@@ -711,9 +802,9 @@ async def create_zip(event):
                         time_left = (total - current) / (speed * 1024 * 1024)
                         progress_message += f"Time left: {time_left:.2f} seconds"
 
-                        progress_bar_length = int(progress_percent / 2)
-                        progress_bar_text = "█" * progress_bar_length + "░" * (50 - progress_bar_length)
-        
+                        progress_bar_length = int(progress_percent / 5)
+                        progress_bar_text = "█" * progress_bar_length + "░" * (20 - progress_bar_length)
+
                         progress_message += f"\n[{progress_bar_text}]"
 
         # Create a message with HTML formatting for better appearance
@@ -724,7 +815,6 @@ async def create_zip(event):
                             await msg.edit(message_text, parse_mode='html')
                         except Exception as e:
                             print(e)
-
                 type_of = f"Uploading Compressed file\nProgress:"
                 msg = await event.respond("uploading started")
 
@@ -774,23 +864,37 @@ async def create_zip(event):
                     for link in links:
                         if link and (link.startswith("http://") or link.startswith("https://")):
                             sanitized_link = re.sub(r'[^a-zA-Z0-9:/._-]', '', link)
-        # Remove non-alphanumeric characters from the link                                                      sanitized_link = re.sub(r'[^a-zA-Z0-9:/._-]', '', link)
+        # Remove non-alphanumeric char                                                      
+                            sanitized_link = re.sub(r'[^a-zA-Z0-9:/._-]', '', link)
                             jink=sanitized_link.replace("0m","")
                             try:
                                 await message.edit(f" Not able to upload files more than 500MB here\n So I provided this download ",buttons=Button.url("download file",jink))
                             except Exception as e:
                                 print(f"Error sending link: {link}, Error: {e}")
                         else:
-                            print(f"Invalid link: {link}")  
+                            print(f"Invalid link: {link}")
                         zipping_in_progress=False                   # ... (previous code remains the same)
                     if os.path.exists(user_dir):
                         shutil.rmtree(user_dir, ignore_errors=True)  # Rec$
                         os.makedirs(user_dir, exist_ok=True)
                         await start(event)
             elif file_size <= 4000000000 and video_sent:
+                import requests
+
+                url = "https://api.gofile.io/getServer"
+
+# Send an HTTP GET request and get the JSON response
+                response = requests.get(url)
+                data = response.json()
+
+# Extract the server from the JSON response
+                server = data["data"]["server"]
+
+# Print the server
                 zipping_in_progress=False
                 video_sent = False
                 file_size = os.path.getsize(zip_filename)
+                print(server)
 
                 if file_size > 5000000000:  # 5000 MB
                     await event.reply("File size is too large to upload here. Please use an alternative method.", buttons=back_buttons)
@@ -798,23 +902,24 @@ async def create_zip(event):
 
                 message=await event.respond('Compression completed. Uploading file...')
 
-                transfer_url = "https://transfer.sh"
+                transfer_url =f"https://{server}.gofile.io/uploadFile"
                 try:
-        # Use subprocess to run the curl command to upload the zip file
-                    command=["curl", "--upload-file", zip_filename, transfer_url]
-                    start_time=time.time()
-                    output= subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True, bufsize=1,   universal_newlines=True, )
-                    for line in output.stdout:
+                 command=["curl","-F", f"file=@{zip_filename}", transfer_url]
+                 start_time=time.time()
+                 print(command)
+                 output= subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True, bufsize=1,   universal_newlines=True, )
+                 for line in output.stdout:
                         type_of = "Uploading\nProgress:"
                         line = line.strip()
-
                         if line:
                             output_text = line
+                            print(line)
 
                             if edit % 5 == 0:
                                 parts = line.split()
 
                                 if len(parts) > 10:
+                                     print(parts[1])
                                      total_size = parts[1]
                                      total =re.sub("[^0-9]", "", total_size)
                                      current_size = parts[5]
@@ -836,8 +941,8 @@ async def create_zip(event):
                                                 time_left = (total - current) / (speed*10)
                                                 progress_message += f"Time left: {time_left:.2f} seconds"
 
-                                                progress_bar_length = int(progress_percent / 2)
-                                                progress_bar_text = "�^v^h" * progress_bar_length + "�^v^q" * (50 - progress_bar_length)
+                                                progress_bar_length = int(progress_percent / 5)
+                                                progress_bar_text = "█" * progress_bar_length + "░" * (20 - progress_bar_length)
                                                 progress_message += f"\n[{progress_bar_text}]"
 
                                                 message_text = f"<b>{type_of}</b>\n{progress_message}"
@@ -850,18 +955,21 @@ async def create_zip(event):
 
                                                         zipping_in_progress=False
                         edit+=1
-                    print(output)
-                    links = re.findall(r'https://transfer.sh/.*', line)
-                    print(links)
-                    for link in links:
-                        if link and (link.startswith("http://") or link.startswith("https://")):
+                 text=line
+                 start_index = text.find("https://gofile.io")
+                 end_index = text.find('"', start_index)
+
+# Extract the link
+                 link = text[start_index:end_index]
                             #sanitized_link = re.sub(r'[^a-zA-Z0-9:/._-]', '', link)
-                            #print(sanitized_link)
-                            try:
+
+#print(sanitized_link)
+                 try:
                                 await message.edit(f"Not able to upload files more than 500MB here\n So I provided this download link:", buttons=Button.url("Download File",link))
                                 zipping_in_progress=False
-                            except Exception as e:
+                 except Exception as e:
                                 print(f"Error sending link: {link}, Error: {e}")
+    # Clean up the user directory
                 except subprocess.CalledProcessError as e:
                     print(e)
                     await start(event)
@@ -878,22 +986,22 @@ async def create_zip(event):
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/help'))
 async def help_handler(event):
     user_id = str(event.sender_id)
-    user_dir = f"/home/u206777/Work/zipper/{user_id}"
+    user_dir = f"/home/u209464/Work/zipper/{user_id}"
 
     # Provide information about the bot
     help_message = (
-        "🤖 **File Compression Bot Help** 🤖\n\n"
+        "🤖 File Compression Bot Help 🤖\n\n"
         "This bot allows you to compress files into zip archives and manage your files.\n\n"
-        "📋 **Available Commands:**\n"
+        "📋 Available Commands:\n"
         "/start - Start the bot\n"
         "/my_files - List your files\n"
         "/clear - Clear your files\n"
         "/fzip - Compress files into a zip archive\n"
         "/help - Show this help message\n\n"
-        "🚧 **Limitations:**\n"
+        "🚧 Limitations:\n"
         "- Maximum file size for compression: 2GB\n"
         "- Maximum storage per user: 4GB\n\n"
-        "📞 **Support:**\n"
+        "📞 Support:\n"
         "If you need assistance or have any questions, please contact the bot admin.\n"
         f"Admin : @nub_coder_s\n\n"
         "Enjoy using the bot! 🚀"
@@ -908,7 +1016,7 @@ edit=0
 async def update_progress(event, message, link):
     while True:
         await asyncio.sleep(3)  # Update progress every 5 seconds
-        
+
 async def link_download(event):
     global link_downloading
     global dd
@@ -921,7 +1029,7 @@ async def link_download(event):
     if user_id not in uuser_ids:
 
        return await link_send(event)
-    user_dir = f"/home/u206777/Work/zipper/{user_id}"
+    user_dir = f"/home/u209464/Work/zipper/{user_id}"
     download_directory = user_dir
     os.makedirs(user_dir, exist_ok=True)
 
@@ -934,7 +1042,6 @@ async def link_download(event):
             response = requests.head(link)
             if "content-length" in response.headers:
                 content_length = int(response.headers["content-length"])
-
                 if content_length <= remaining_storage:
                     link_downloading = True
                     message = await event.reply(f"File size: {content_length} bytes\nStarting download")
@@ -952,10 +1059,10 @@ async def link_download(event):
                 )
 
                     last_progress_update_time = time.time()
-                    
+
                     for line in process.stdout:
                         line = line.strip()
-                    
+
                         if line and line.endswith("s") and edit % 8 ==0:
                             await message.edit(line)
                         edit+=1
@@ -972,14 +1079,14 @@ async def link_download(event):
                         user_ids.clear()
                         dd=dd-1
                         await link_download(next_link)
-   
+
                     elif not download_queue.empty():
                         next_file = download_queue.get()
                         user_ids.clear()
                         dd=dd-1
                         await download(next_file)
-                else:
-                    await event.reply("File size exceeds available storage. Aborting download.")
+                    else:
+                        await event.reply("File size exceeds available storage. Aborting download.")
             else:
                 await event.reply("Content length not found in headers. Cannot determine file size.")
         except Exceptionas as e:
@@ -990,11 +1097,9 @@ async def link_download(event):
         if user_id not in user_ids:
             user_ids[user_id] = True
             user2=await event.reply(que,buttons=Button.inline("check your queue",b"bhad"))
-      
+
         link_download_queue.put(event)
 
 # ... (previous code remains the same)
 
 client.run_until_disconnected()
-
-

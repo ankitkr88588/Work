@@ -2,7 +2,7 @@
 
 # Define an array of process names and their corresponding commands
 declare -A processes
-processes["zipper.py"]="nohup python3 /home/u206777/Work/zipper/zipper.py &"
+processes["zipper.py"]="nohup python3 /home/u209464/Work/zipper/zipper.py &"
 # Declare an associative array to track process PIDs
 declare -A pids
 
