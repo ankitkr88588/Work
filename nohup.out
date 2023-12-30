@@ -5596,6 +5596,7 @@ python3: can't open file '/home/u206777/zipper/zipper.py': [Errno 2] No such fil
 python3: can't open file '/home/u206777/zipper/zipper.py': [Errno 2] No such file or directory
 python3: can't open file '/home/u206777/zipper/zipper.py': [Errno 2] No such file or directory
 python3: can't open file '/home/u206777/zipper/zipper.py': [Errno 2] No such file or directory
+<<<<<<< HEAD
 Job with ID  has completed.
 Job submitted with ID: 2455204.v-qsvr-1.aidevcloud
 Job submitted with ID: 2455206.v-qsvr-1.aidevcloud
@@ -5612,3 +5613,5 @@ Job submitted with ID: 2455216.v-qsvr-1.aidevcloud
 Job with ID 2455216.v-qsvr-1.aidevcloud has completed.
 qdel: Unauthorized Request  MSG=operation not permitted all
 Job submitted with ID: 2455217.v-qsvr-1.aidevcloud
+=======
+>>>>>>> 452c8fa3a5220a0785b60fbf3804bbeb6de4a8df
