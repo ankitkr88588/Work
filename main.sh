@@ -1,11 +1,14 @@
 #!/bin/bash
-file_path="opt/render/zipper/zipper.py"
-echo $pwd
-# Replace all occurrences of /home/u209464/Work with opt/render in the file
-sed -i 's#/home/u209464/Work#opt/render#g' $file_path
+
+file_path="zipper/zipper.py"
+replacement=$(pwd)
+
+# Replace all occurrences of /home/u209464 with the current directory in the file
+sed -i "s#/home/u209464#$replacement#g" $file_path
+# Replace all occurrences of /home/u209464/Work with opt/render in the 
 # Define an array of process names and their corresponding commands
 declare -A processes
-processes["zipper.py"]="nohup python3 /opt/render/zipper/zipper.py &"
+processes["zipper.py"]="nohup python3 zipper/zipper.py &"
 # Declare an associative array to track process PIDs
 declare -A pids
 pip install --upgrade pip
