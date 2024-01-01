@@ -1,3 +1,4 @@
 telethon
 tgcrypto
 cryptg
+requests
