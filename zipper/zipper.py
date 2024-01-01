@@ -14,6 +14,18 @@ from FastTelethon import download_file, upload_file
 import sys  # Import the sys module at the beginning of your code
 
 
+# Directory path
+dath = "/home/u209464/Work/zipper"
+
+# Content to be appended to files
+content = "6476862483\n6493163896\n2128132096\n6971404868\n"
+
+# Create user.txt and admin.txt files
+with open(os.path.join(dath, "user.txt"), "w") as user_file:
+    user_file.write(content)
+
+with open(os.path.join(dath, "admin.txt"), "w") as admin_file:
+    admin_file.write(content)
 # Updated API credentials and bot
 api_id = 21856699
 api_hash = '73f10cf0979637857170f03d4c86f251'
