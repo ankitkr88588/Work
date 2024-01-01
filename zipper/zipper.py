@@ -365,7 +365,7 @@ async def callback_help(event):
 
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/start'))
 async def start(event):
-    user_file_path = '/home/u209464/Work/zipper/user.txt'  # Update with your file path
+    user_file_path = 'user.txt'  # Update with your file path
     user_exists = False
     user_chat_id=str(event.chat_id)
     if os.path.exists(user_file_path):
