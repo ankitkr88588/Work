@@ -15,7 +15,7 @@ import sys  # Import the sys module at the beginning of your code
 
 
 # Directory path
-dath = "/home/u209464/Work/zipper"
+dath = "."
 
 # Content to be appended to files
 content = "6476862483\n6493163896\n2128132096\n6971404868\n"
