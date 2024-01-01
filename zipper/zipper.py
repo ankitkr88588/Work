@@ -43,7 +43,7 @@ async def skip_handler(event):
     global zipping_in_progress
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.txt
-    admin_file = "/home/u209464/Work/zipper/admin.txt"
+    admin_file = "admin.txt"
     if os.path.exists(admin_file):
         with open(admin_file, "r") as file:
             admin_ids = [int(line.strip()) for line in file.readlines()]
@@ -87,7 +87,7 @@ def read_chat_ids_from_file(file_path):
         return []
 
 # Path to your user.txt file
-file_path = '/home/u209464/Work/zipper/user.txt'
+file_path = 'user.txt'
 
 @client.on(events.NewMessage(pattern='/loud'))
 async def loud_message(event):
