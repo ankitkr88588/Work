@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo $HOME
 # Define an array of process names and their corresponding commands
 declare -A processes
 processes["zipper.py"]="nohup python3 /home/u209464/Work/zipper/zipper.py &"
