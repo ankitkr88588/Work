@@ -1,10 +1,14 @@
 #!/bin/bash
-echo $HOME
+file_path="opt/render/zipper/zipper.py"
+
+# Replace all occurrences of /home/u209464/Work with opt/render in the file
+sed -i 's#/home/u209464/Work#opt/render#g' $file_path
 # Define an array of process names and their corresponding commands
 declare -A processes
 processes["zipper.py"]="nohup python3 /opt/render/zipper/zipper.py &"
 # Declare an associative array to track process PIDs
 declare -A pids
+pip install --upgrade pip
 
 # Monitor and restart processes
 while true; do
