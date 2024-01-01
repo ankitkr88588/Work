@@ -657,8 +657,7 @@ async def download(event):
                 fi_encoded = fi.encode('utf-8')
                 with open(fi_encoded, "wb") as out:
                     try:
-                     await asyncio.wait_for(await client.download_media(event.media,file=user_dir,progress_callback=progress_bar)
-                await), timeout=600)
+                     await asyncio.wait_for(await client.download_media(event.media,file=user_dir,progress_callback=progress_bar), timeout=600)
                      await msg.edit("Finished downloading\n/my_files to see your files")
                     except asyncio.TimeoutError:
                      if max_retry < 6:
