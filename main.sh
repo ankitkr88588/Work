@@ -1,6 +1,6 @@
 #!/bin/bash
 file_path="opt/render/zipper/zipper.py"
-
+echo $pwd
 # Replace all occurrences of /home/u209464/Work with opt/render in the file
 sed -i 's#/home/u209464/Work#opt/render#g' $file_path
 # Define an array of process names and their corresponding commands
