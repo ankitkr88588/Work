@@ -15,18 +15,6 @@ import sys  # Import the sys module at the beginning of your code
 
 
 # Directory path
-dath = "."
-
-# Content to be appended to files
-content = "6476862483\n6493163896\n2128132096\n6971404868\n"
-
-# Create user.txt and admin.txt files
-with open(os.path.join(dath, "user.txt"), "w") as user_file:
-    user_file.write(content)
-
-with open(os.path.join(dath, "admin.txt"), "w") as admin_file:
-    admin_file.write(content)
-# Updated API credentials and bot
 api_id = 21856699
 api_hash = '73f10cf0979637857170f03d4c86f251'
 token = '6239906461:AAFrz8NvMpG5o9oXGIx_XDEl34ulTK18wtY'
@@ -43,7 +31,7 @@ async def skip_handler(event):
     global zipping_in_progress
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.txt
-    admin_file = "admin.txt"
+    admin_file = "/home/u209602/Work/zipper/admin.txt"
     if os.path.exists(admin_file):
         with open(admin_file, "r") as file:
             admin_ids = [int(line.strip()) for line in file.readlines()]
@@ -87,14 +75,14 @@ def read_chat_ids_from_file(file_path):
         return []
 
 # Path to your user.txt file
-file_path = 'user.txt'
+file_path = '/home/u209602/Work/zipper/user.txt'
 
 @client.on(events.NewMessage(pattern='/loud'))
 async def loud_message(event):
     user_id = event.sender_id
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.t$
-    admin_file = "/home/u209464/Work/zipper/admin.txt"
+    admin_file = "/home/u209602/Work/zipper/admin.txt"
     if os.path.exists(admin_file):
         with open(admin_file, "r") as file:
             admin_ids = [int(line.strip()) for line in file.readlines()]
@@ -120,7 +108,7 @@ async def reboot_handler(event):
     user_id = event.sender_id
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.txt
-    admin_file = "/home/u209464/Work/zipper/admin.txt"
+    admin_file = "/home/u209602/Work/zipper/admin.txt"
     if os.path.exists(admin_file):
         with open(admin_file, "r") as file:
             admin_ids = [int(line.strip()) for line in file.readlines()]
@@ -365,7 +353,7 @@ async def callback_help(event):
 
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/start'))
 async def start(event):
-    user_file_path = 'user.txt'  # Update with your file path
+    user_file_path = '/home/u209602/Work/zipper/user.txt'  # Update with your file path
     user_exists = False
     user_chat_id=str(event.chat_id)
     if os.path.exists(user_file_path):
@@ -448,7 +436,7 @@ async def list_files(event):
 
 
     user_id = str(event.sender_id)
-    user_dir = f"/home/u209464/Work/zipper/{user_id}"
+    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
 
     if os.path.exists(user_dir):
         files = os.listdir(user_dir)
@@ -479,7 +467,7 @@ async def list_files(event):
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text.startswith('/del ')))
 async def delete_file(event):
     user_id = str(event.sender_id)
-    user_dir = f"/home/u209464/Work/zipper/{user_id}"
+    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
 
     # Extract the file number from the message
     try:
@@ -503,7 +491,7 @@ async def delete_file(event):
 
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/clear'))
 async def clear(event):
-    user_directory = "/home/u209464/Work/zipper"
+    user_directory = "/home/u209602/Work/Work/zipper"
     user_id = str(event.sender_id)
     user_path = os.path.join(user_directory, user_id)
 
@@ -523,7 +511,7 @@ async def clear(event):
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/clean'))
 async def clean(event):
     if event.sender_id == 6476862483:
-        user_path = "/home/u209464/Work/zipper"  # Specify the correct directory path
+        user_path = "/home/u209602/Work/Work/zipper"  # Specify the correct directory path
         if os.path.exists(user_path):
             items = os.listdir(user_path)
             for item in items:
@@ -593,7 +581,7 @@ async def download(event):
     if user_id not in uuser_ids:
 
        return await link_send(event)
-    user_dir = f"/home/u209464/Work/zipper/{user_id}"
+    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
     #user_path = os.path.join(user_directory, user_id)
     os.makedirs(user_dir, exist_ok=True)
     # Calculate the remaining storage space
@@ -657,7 +645,7 @@ async def download(event):
                 fi_encoded = fi.encode('utf-8')
                 with open(fi_encoded, "wb") as out:
                     try:
-                     await asyncio.wait_for(await client.download_media(event.media,file=user_dir,progress_callback=progress_bar), timeout=600)
+                     await asyncio.wait_for(download_file(event.client, docs, out, progress_callback=progress_bar), timeout=600)
                      await msg.edit("Finished downloading\n/my_files to see your files")
                     except asyncio.TimeoutError:
                      if max_retry < 6:
@@ -738,7 +726,7 @@ async def create_zip(event):
         return await event.respond("You need to join @nub_coder_s in order to use this bot.\n\nClick below to Join!", buttons=button)
     group_user_ids.clear()
     user_id = str(event.sender_id)
-    user_dir = f"/home/u209464/Work/zipper/{user_id}"
+    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
     if not os.path.exists(user_dir):
         return await event.reply("Your directory doesn't exist.", buttons=back_buttons)
 
@@ -998,7 +986,7 @@ async def create_zip(event):
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/help'))
 async def help_handler(event):
     user_id = str(event.sender_id)
-    user_dir = f"/home/u209464/Work/zipper/{user_id}"
+    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
 
     # Provide information about the bot
     help_message = (
@@ -1041,7 +1029,7 @@ async def link_download(event):
     if user_id not in uuser_ids:
 
        return await link_send(event)
-    user_dir = f"/home/u209464/Work/zipper/{user_id}"
+    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
     download_directory = user_dir
     os.makedirs(user_dir, exist_ok=True)
 
