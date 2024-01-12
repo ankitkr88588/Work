@@ -31,7 +31,7 @@ async def skip_handler(event):
     global zipping_in_progress
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.txt
-    admin_file = "/home/u209602/Work/zipper/admin.txt"
+    admin_file = "/etc/secrets/admin.txt"
     if os.path.exists(admin_file):
         with open(admin_file, "r") as file:
             admin_ids = [int(line.strip()) for line in file.readlines()]
@@ -64,7 +64,7 @@ async def timeout(event):
                  dd=dd-1
                  user_ids.clear()
                  await link_download(next_link)
-'''def read_chat_ids_from_file(file_path):
+def read_chat_ids_from_file(file_path):
     try:
         with open(file_path, 'r') as file:
             chat_ids = file.readlines()
@@ -75,14 +75,14 @@ async def timeout(event):
         return []
 
 # Path to your user.txt file
-file_path = '/home/u209602/Work/zipper/user.txt'''
+file_path = '/etc/secrets/user.txt
 
 @client.on(events.NewMessage(pattern='/loud'))
 async def loud_message(event):
     user_id = event.sender_id
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.t$
-    admin_file = "/home/u209602/Work/zipper/admin.txt"
+    admin_file = "/etc/secrets/admin.txt"
     if os.path.exists(admin_file):
         with open(admin_file, "r") as file:
             admin_ids = [int(line.strip()) for line in file.readlines()]
@@ -108,7 +108,7 @@ async def reboot_handler(event):
     user_id = event.sender_id
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.txt
-    admin_file = "/home/u209602/Work/zipper/admin.txt"
+    admin_file = "/etc/secrets/admin.txt"
     if os.path.exists(admin_file):
         with open(admin_file, "r") as file:
             admin_ids = [int(line.strip()) for line in file.readlines()]
@@ -312,7 +312,7 @@ async def callback_queue(event):
     user_id = event.sender_id
 
     # Check if the user is an admin by comparing their user ID with the ones in admin.t$
-    admin_file = "/home/u205987/compressor/admin.txt"
+    admin_file = "/etc/secrets/admin.txt"
     if 2==2:
                 user_task_counts = {}
 
@@ -353,7 +353,7 @@ async def callback_help(event):
 
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/start'))
 async def start(event):
-    '''user_file_path = '/home/u209602/Work/zipper/user.txt'  # Update with your file path
+    user_file_path = '/etc/secrets/user.txt'  # Update with your file path
     user_exists = False
     user_chat_id=str(event.chat_id)
     if os.path.exists(user_file_path):
@@ -365,7 +365,7 @@ async def start(event):
     # If the user's chat_id is not present, append it to the file
     if not user_exists:
         with open(user_file_path, 'a+') as user_file:
-            user_file.write(user_chat_id + '\n')'''
+            user_file.write(user_chat_id + '\n')
     await event.respond(
             "Hello! Send me any files or direct download link  and I will compress them to a zip",
             buttons=home_buttons)
