@@ -4,7 +4,7 @@ file_path="zipper/zipper.py"
 replacement=$(pwd)
 
 # Replace all occurrences of /home/u209464 with the current directory in the file
-sed -i "s#/home/u209464#$replacement#g" $file_path
+sed -i "s#/home/u209602#$replacement#g" $file_path
 # Replace all occurrences of /home/u209464/Work with opt/render in the 
 # Define an array of process names and their corresponding commands
 python -m venv myenv
