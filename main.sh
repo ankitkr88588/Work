@@ -12,7 +12,7 @@ source myenv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 declare -A processes
-processes["zipper.py"]="nohup PORT=8000 python3 zipper/zipper.py &"
+processes["zipper.py"]="PORT=8000 nohup python3 zipper/zipper.py &"
 # Declare an associative array to track process PIDs
 declare -A pids
 
