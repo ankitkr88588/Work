@@ -5,6 +5,7 @@ import hashlib
 import inspect
 import logging
 import math
+import time
 import os
 from collections import defaultdict
 from typing import Optional, List, AsyncGenerator, Union, Awaitable, DefaultDict, Tuple, BinaryIO
@@ -295,6 +296,8 @@ async def download_file(client: TelegramClient,
             r = progress_callback(out.tell(), size)
             if inspect.isawaitable(r):
                 await r
+        await asyncio.sleep(0.2)
+         
 
     return out
 
@@ -305,4 +308,5 @@ async def upload_file(client: TelegramClient,
 
                       ) -> TypeInputFile:
     res = (await _internal_transfer_to_telegram(client, file, progress_callback))[0]
+    await asyncio.sleep(0.2)
     return res
