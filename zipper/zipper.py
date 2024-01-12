@@ -64,7 +64,7 @@ async def timeout(event):
                  dd=dd-1
                  user_ids.clear()
                  await link_download(next_link)
-def read_chat_ids_from_file(file_path):
+'''def read_chat_ids_from_file(file_path):
     try:
         with open(file_path, 'r') as file:
             chat_ids = file.readlines()
@@ -75,7 +75,7 @@ def read_chat_ids_from_file(file_path):
         return []
 
 # Path to your user.txt file
-file_path = '/home/u209602/Work/zipper/user.txt'
+file_path = '/home/u209602/Work/zipper/user.txt'''
 
 @client.on(events.NewMessage(pattern='/loud'))
 async def loud_message(event):
@@ -353,7 +353,7 @@ async def callback_help(event):
 
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/start'))
 async def start(event):
-    user_file_path = '/home/u209602/Work/zipper/user.txt'  # Update with your file path
+    '''user_file_path = '/home/u209602/Work/zipper/user.txt'  # Update with your file path
     user_exists = False
     user_chat_id=str(event.chat_id)
     if os.path.exists(user_file_path):
@@ -365,7 +365,7 @@ async def start(event):
     # If the user's chat_id is not present, append it to the file
     if not user_exists:
         with open(user_file_path, 'a+') as user_file:
-            user_file.write(user_chat_id + '\n')
+            user_file.write(user_chat_id + '\n')'''
     await event.respond(
             "Hello! Send me any files or direct download link  and I will compress them to a zip",
             buttons=home_buttons)
