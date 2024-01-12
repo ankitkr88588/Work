@@ -1,6 +1,7 @@
 # copied from https://github.com/tulir/mautrix-telegram/blob/master/mautrix_telegram/util/parallel_file_transfer.py
 # Copyright (C) 2021 Tulir Asokan
 import asyncio
+import time
 import hashlib
 import inspect
 import logging
@@ -53,6 +54,7 @@ class DownloadSender:
         result = await self.client._call(self.sender, self.request)
         self.remaining -= 1
         self.request.offset += self.stride
+        time.sleep(1)
         return result.bytes
 
     def disconnect(self) -> Awaitable[None]:
@@ -190,6 +192,7 @@ class ParallelTransferrer:
                           connection_count: Optional[int] = None) -> Tuple[int, int, bool]:
         connection_count = connection_count or self._get_connection_count(file_size)
         part_size = (part_size_kb or utils.get_appropriated_part_size(file_size)) * 1024
+        time.sleep()
         part_count = (file_size + part_size - 1) // part_size
         is_large = file_size > 10 * 1024 * 1024
         await self._init_upload(connection_count, file_id, part_count, is_large)
@@ -207,6 +210,7 @@ class ParallelTransferrer:
                        connection_count: Optional[int] = None) -> AsyncGenerator[bytes, None]:
         connection_count = connection_count or self._get_connection_count(file_size)
         part_size = (part_size_kb or utils.get_appropriated_part_size(file_size)) * 1024
+        time.sleep(1)
         part_count = math.ceil(file_size / part_size)
         log.debug("Starting parallel download: "
                   f"{connection_count} {part_size} {part_count} {file!s}")
