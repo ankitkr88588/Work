@@ -75,7 +75,7 @@ def read_chat_ids_from_file(file_path):
         return []
 
 # Path to your user.txt file
-file_path = '/etc/secrets/user.txt
+file_path = '/etc/secrets/user.txt'
 
 @client.on(events.NewMessage(pattern='/loud'))
 async def loud_message(event):
