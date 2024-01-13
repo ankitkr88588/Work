@@ -75,7 +75,7 @@ def read_chat_ids_from_file(file_path):
         return []
 
 # Path to your user.txt file
-file_path = '/etc/secrets/user.txt'
+file_path = 'user.txt'
 
 @client.on(events.NewMessage(pattern='/loud'))
 async def loud_message(event):
@@ -353,7 +353,7 @@ async def callback_help(event):
 
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/start'))
 async def start(event):
-    user_file_path = '/etc/secrets/user.txt'  # Update with your file path
+    user_file_path = 'user.txt'  # Update with your file path
     user_exists = False
     user_chat_id=str(event.chat_id)
     if os.path.exists(user_file_path):
