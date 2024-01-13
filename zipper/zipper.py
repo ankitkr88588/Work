@@ -436,7 +436,7 @@ async def list_files(event):
 
 
     user_id = str(event.sender_id)
-    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
+    user_dir = user_id
 
     if os.path.exists(user_dir):
         files = os.listdir(user_dir)
@@ -467,7 +467,7 @@ async def list_files(event):
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text.startswith('/del ')))
 async def delete_file(event):
     user_id = str(event.sender_id)
-    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
+    user_dir = user_id
 
     # Extract the file number from the message
     try:
@@ -491,7 +491,7 @@ async def delete_file(event):
 
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/clear'))
 async def clear(event):
-    user_directory = "/home/u209602/Work/Work/zipper"
+    user_directory = './'
     user_id = str(event.sender_id)
     user_path = os.path.join(user_directory, user_id)
 
@@ -511,7 +511,7 @@ async def clear(event):
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/clean'))
 async def clean(event):
     if event.sender_id == 6476862483:
-        user_path = "/home/u209602/Work/Work/zipper"  # Specify the correct directory path
+        user_path = "./"  # Specify the correct directory path
         if os.path.exists(user_path):
             items = os.listdir(user_path)
             for item in items:
@@ -581,7 +581,7 @@ async def download(event):
     if user_id not in uuser_ids:
 
        return await link_send(event)
-    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
+    user_dir = str(user_id)
     #user_path = os.path.join(user_directory, user_id)
     os.makedirs(user_dir, exist_ok=True)
     # Calculate the remaining storage space
@@ -726,7 +726,7 @@ async def create_zip(event):
         return await event.respond("You need to join @nub_coder_s in order to use this bot.\n\nClick below to Join!", buttons=button)
     group_user_ids.clear()
     user_id = str(event.sender_id)
-    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
+    user_dir = user_id
     if not os.path.exists(user_dir):
         return await event.reply("Your directory doesn't exist.", buttons=back_buttons)
 
@@ -986,7 +986,7 @@ async def create_zip(event):
 @client.on(events.NewMessage(incoming=True, func=lambda e: e.is_private and e.raw_text == '/help'))
 async def help_handler(event):
     user_id = str(event.sender_id)
-    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
+    user_dir = user_id
 
     # Provide information about the bot
     help_message = (
@@ -1029,7 +1029,7 @@ async def link_download(event):
     if user_id not in uuser_ids:
 
        return await link_send(event)
-    user_dir = f"/home/u209602/Work/Work/zipper/{user_id}"
+    user_dir = user_id
     download_directory = user_dir
     os.makedirs(user_dir, exist_ok=True)
 
