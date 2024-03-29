@@ -1,5 +1,0 @@
-A12_V212 : https://www.mediafire.com/file/7p7p1joojylw2yp/X6815-H771A-S-INFK-DC-221207V212%2528MobiFirmware.com%2529.zip/file
-A12_V87 : https://www.mediafire.com/file/bll31b9gvmijy63/X6815-H771A-S-INFK-DC-220926V87%2528MobiFirmware.com%2529.zip/file
-A11_V181 : https://www.mediafire.com/file/wgzk5eytrmnfx6p/X6815-H771A-R-INFK-220823V181%2528MobiFirmware.com%2529.zip/file
-A11_V149 : https://www.mediafire.com/file/1xakjxyheqmncra/Infinix_Zero_5G_X6815_MT6877_V149_220223%2528MobiFirmware.com%2529.zip/file
-
