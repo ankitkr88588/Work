@@ -8,7 +8,7 @@ from telethon.sync import TelegramClient, events
 # Replace these with your actual credentials
 api_id = 21856699
 api_hash = '73f10cf0979637857170f03d4c86f251'
-bot_token = '6596357904:AAFkK8sKg2wiy7qfFWn-2DStVYINjH6V1po'
+bot_token = '6596357904:AAFQjhOJjhE3fDH5SCdXQ0d4cxkTiSRVOpE'
 
 # Initialize the Telethon client
 client = TelegramClient(None, api_id, api_hash).start(bot_token=bot_token)
