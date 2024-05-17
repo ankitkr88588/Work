@@ -6,7 +6,7 @@ from telethon.tl.types import MessageEntityUrl
 api_id = 21856699
 api_hash = '73f10cf0979637857170f03d4c86f251'
 
-bot_token = '6480106506:AAHn3_n5snw85MH_lpOQSM55RPalSZ0uuTQ'
+bot_token ='7169250882:AAGz510rJvPZ7sYRPMJ62N9hkiNCwZmou1c'
 #bot_token='6834882551:AAFJ_IBfUhXbkye4RslYCkWz0OJx1zEhrho'
 firmware_directory = '.'
 

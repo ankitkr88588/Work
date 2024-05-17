@@ -706,3 +706,59 @@ NameError: name 'add_link' is not defined
 ./main.sh: line 23: 27778 Killed                  nohup python3 firmware.py
 ./main.sh: line 23: 27779 Killed                  sleep 3600
 Starting zipper.py...
+Starting zipper.py...
+Traceback (most recent call last):
+  File "firmware.py", line 14, in <module>
+    client = TelegramClient(None, api_id, api_hash).start(bot_token=bot_token)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/auth.py", line 128, in start
+    else self.loop.run_until_complete(coro)
+  File "/usr/lib/python3.6/asyncio/base_events.py", line 484, in run_until_complete
+    return future.result()
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/auth.py", line 177, in _start
+    await self.sign_in(bot_token=bot_token)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/auth.py", line 357, in sign_in
+    result = await self(request)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/users.py", line 30, in __call__
+    return await self._call(self._sender, request, ordered=ordered)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/users.py", line 87, in _call
+    result = await future
+telethon.errors.rpcerrorlist.AccessTokenExpiredError: Bot token expired (caused by ImportBotAuthorizationRequest)
+Starting zipper.py...
+Traceback (most recent call last):
+  File "firmware.py", line 14, in <module>
+    client = TelegramClient(None, api_id, api_hash).start(bot_token=bot_token)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/auth.py", line 128, in start
+    else self.loop.run_until_complete(coro)
+  File "/usr/lib/python3.6/asyncio/base_events.py", line 484, in run_until_complete
+    return future.result()
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/auth.py", line 177, in _start
+    await self.sign_in(bot_token=bot_token)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/auth.py", line 357, in sign_in
+    result = await self(request)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/users.py", line 30, in __call__
+    return await self._call(self._sender, request, ordered=ordered)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/users.py", line 87, in _call
+    result = await future
+telethon.errors.rpcerrorlist.AccessTokenExpiredError: Bot token expired (caused by ImportBotAuthorizationRequest)
+Starting zipper.py...
+Traceback (most recent call last):
+  File "firmware.py", line 14, in <module>
+    client = TelegramClient(None, api_id, api_hash).start(bot_token=bot_token)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/auth.py", line 128, in start
+    else self.loop.run_until_complete(coro)
+  File "/usr/lib/python3.6/asyncio/base_events.py", line 484, in run_until_complete
+    return future.result()
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/auth.py", line 177, in _start
+    await self.sign_in(bot_token=bot_token)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/auth.py", line 357, in sign_in
+    result = await self(request)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/users.py", line 30, in __call__
+    return await self._call(self._sender, request, ordered=ordered)
+  File "/home/u219967/.local/lib/python3.6/site-packages/telethon/client/users.py", line 87, in _call
+    result = await future
+telethon.errors.rpcerrorlist.AccessTokenExpiredError: Bot token expired (caused by ImportBotAuthorizationRequest)
+./main.sh: line 23:  1080 Killed                  sleep 3600
+Starting zipper.py...
+./main.sh: line 23: 20282 Killed                  nohup python3 firmware.py
+./main.sh: line 23: 20283 Killed                  sleep 3600
+Starting zipper.py...
